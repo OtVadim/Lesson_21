@@ -2,11 +2,14 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
   <style>
     body {
       height: 2000px;
-      /* добавим body прокрутку, подсказка должна работать и с прокруткой */
+      
     }
 
     .tooltip {
@@ -35,7 +38,41 @@
 
 
   <script>
-   
+    let tooltipElem;
+
+    document.onmouseover = function(event) {
+        let placeHold = event.target;
+
+        let tooltipBody = placeHold.dataset.tooltip;
+        if (!tooltipBody) return;
+
+  tooltipElem = document.createElement('div');
+  tooltipElem.className = 'tooltip';
+  tooltipElem.innerHTML = tooltipBody;
+  document.body.append(tooltipElem);
+
+  let coords = placeHold.getBoundingClientRect();
+
+  let left = coords.left + (target.offsetWidth - tooltipElem.offsetWidth) / 2;
+  if (left < 0) left = 0;
+
+  let top = coords.top - tooltipElem.offsetHeight - 5;
+  if (top < 0) { 
+    top = coords.top + target.offsetHeight + 5;
+  }
+
+  tooltipElem.style.left = left + 'px';
+  tooltipElem.style.top = top + 'px';
+};
+
+document.onmouseout = function(e) {
+
+  if (tooltipElem) {
+    tooltipElem.remove();
+    tooltipElem = null;
+  }
+
+};
   </script>
 
 </body>
